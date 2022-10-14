@@ -64,7 +64,6 @@ jobs:
   # - there were changes and this is a scheduled job
   # - This is a manually trigger job, i.e. workflow_dispatch
   release:
-    needs: changes
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != 'prerelease' }} # yamllint disable-line rule:line-length
     permissions: "write-all"
