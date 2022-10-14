@@ -35,10 +35,16 @@ on:
           - major
       rc:
         # Friendly description to be shown in the UI instead of 'name'
-        description: "Release Candidate number (if applicable)"
+        description: "Release Candidate i.e. rc.1 (if applicable)"
         # Input has to be provided for the workflow to run
         required: false
         type: string
+      prerelease:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: "Is this a prerelease?"
+        # Input has to be provided for the workflow to run
+        required: false
+        type: boolean
 
 jobs:
   # yamllint:
@@ -47,29 +53,13 @@ jobs:
   #     - uses: actions/checkout@v3
   #     - uses: ./.github/actions/yamllint
 
-  # Make a prerelease if
-  # - there were changes and this is a scheduled job
-  # - This is a manually trigger job, i.e. workflow_dispatch
-  prerelease:
-    # needs: yamllint
-    runs-on: ubuntu-latest
-    # if: ${{ github.event_name == 'workflow_dispatch' && inputs.version == 'prerelease' }} # yamllint disable-line rule:line-length
-    permissions: "write-all"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Prerelease
-        uses: ./.github/actions/version-release
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          prerelease: ${{inputs.version}}
-
   # Make a release if
   # - there were changes and this is a scheduled job
   # - This is a manually trigger job, i.e. workflow_dispatch
   release:
     # needs: yamllint
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != 'prerelease' }} # yamllint disable-line rule:line-length
+    if: ${{ github.event_name == 'workflow_dispatch'
     permissions: "write-all"
     steps:
       - uses: actions/checkout@v3
@@ -78,3 +68,5 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           version-bump: ${{inputs.version}}
+          append-tag: ${{ inputs.rc }}
+          prerelease: "${{ intputs.prerelease }}"
