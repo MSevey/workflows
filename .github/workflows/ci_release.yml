@@ -39,7 +39,7 @@ on:
         # Input has to be provided for the workflow to run
         required: false
         type: string
-      prerelease:
+      is-prerelease:
         # Friendly description to be shown in the UI instead of 'name'
         description: "Is this a prerelease?"
         # Input has to be provided for the workflow to run
@@ -69,4 +69,4 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           version-bump: ${{inputs.version}}
           append-tag: ${{ inputs.rc }}
-          prerelease: "${{ inputs.prerelease }}"
+          is-prerelease: "${{ inputs.is-prerelease }}"
