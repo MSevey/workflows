@@ -29,7 +29,7 @@ runs:
         default_prerelease_bump: ${{ inputs.prerelease }}
         append_to_pre_release_tag: "rc"
     - name: Create a GitHub release
-      if: ${{ inputs.version-bump is defined }}
+      if: ${{ inputs.version-bump != '' }}
       uses: ncipollo/release-action@v1
       with:
         tag: ${{ steps.tag_version.outputs.new_tag }}
