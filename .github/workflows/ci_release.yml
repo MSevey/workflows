@@ -60,6 +60,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           prerelease: ${{inputs.version}}
+          version-bump: patch
 
   # Make a release if
   # - there were changes and this is a scheduled job
