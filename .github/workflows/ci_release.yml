@@ -30,13 +30,15 @@ on:
         required: true
         type: choice
         options:
-          - prerelease
-          - prepatch
-          - preminor
-          - premajor
           - patch
           - minor
           - major
+      rc:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: "Release Candidate number (if applicable)"
+        # Input has to be provided for the workflow to run
+        required: false
+        type: string
 
 jobs:
   # yamllint:
