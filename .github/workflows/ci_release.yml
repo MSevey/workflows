@@ -50,7 +50,7 @@ jobs:
   # - This is a manually trigger job, i.e. workflow_dispatch
   prerelease:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.version == "prerelease" }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.version == "prerelease" }} # yamllint disable-line rule:line-length
     permissions: "write-all"
     steps:
       - uses: actions/checkout@v3
@@ -66,7 +66,7 @@ jobs:
   release:
     needs: changes
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != "prerelease" }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != "prerelease" }} # yamllint disable-line rule:line-length
     permissions: "write-all"
     steps:
       - uses: actions/checkout@v3
