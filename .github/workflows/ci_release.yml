@@ -59,7 +59,7 @@ jobs:
         uses: ./.github/actions/version-release
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          prelease: ${{inputs.version}}
+          prerelease: ${{inputs.version}}
 
   # Make a release if
   # - there were changes and this is a scheduled job
