@@ -39,11 +39,11 @@ on:
           - major
 
 jobs:
-  yamllint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/yamllint
+  # yamllint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: ./.github/actions/yamllint
 
   # Make a prerelease if
   # - there were changes and this is a scheduled job
