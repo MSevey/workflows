@@ -30,7 +30,10 @@ on:
         required: true
         type: choice
         options:
-          - prelease
+          - prerelease
+          - prepatch
+          - preminor
+          - premajor
           - patch
           - minor
           - major

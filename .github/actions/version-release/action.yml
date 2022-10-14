@@ -7,7 +7,7 @@ inputs:
   version-bump:
     required: false
     description: "major, minor, or patch version bump"
-    default: "patch"
+    default: ""
   prerelease:
     required: false
     description: "prelease, prepatch, preminor or premajor"
