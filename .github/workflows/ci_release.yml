@@ -51,7 +51,7 @@ jobs:
   prerelease:
     needs: yamllint
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.version == 'prerelease' }} # yamllint disable-line rule:line-length
+    # if: ${{ github.event_name == 'workflow_dispatch' && inputs.version == 'prerelease' }} # yamllint disable-line rule:line-length
     permissions: "write-all"
     steps:
       - uses: actions/checkout@v3
