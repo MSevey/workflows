@@ -30,7 +30,7 @@ runs:
       with:
         github_token: ${{ inputs.github-token }}
         default_bump: ${{ inputs.version-bump }}
-        default_release_bump: ${{ inputs.version-bump }}
+        default_prerelease_bump: ${{ inputs.version-bump }}
         append_to_pre_release_tag: "-${{ inputs.append-tag }}"
     - name: Create a GitHub release
       if: ${{ inputs.append-tag != '' }}
