@@ -59,7 +59,7 @@ jobs:
   release:
     # needs: yamllint
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch'
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     permissions: "write-all"
     steps:
       - uses: actions/checkout@v3
@@ -69,4 +69,4 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           version-bump: ${{inputs.version}}
           append-tag: ${{ inputs.rc }}
-          prerelease: "${{ intputs.prerelease }}"
+          prerelease: "${{ inputs.prerelease }}"
