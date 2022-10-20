@@ -33,18 +33,6 @@ on:
           - patch
           - minor
           - major
-      custom:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: "Release Candidate i.e. rc.1 (if applicable)"
-        # Input has to be provided for the workflow to run
-        required: false
-        type: string
-      is-prerelease:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: "Is this a prerelease?"
-        # Input has to be provided for the workflow to run
-        required: false
-        type: boolean
 
 jobs:
   # yamllint:
@@ -52,6 +40,9 @@ jobs:
   #   steps:
   #     - uses: actions/checkout@v3
   #     - uses: ./.github/actions/yamllint
+
+  hadolint:
+    uses: ./.github/workflows/reusable_dockerfile_lint.yml
 
   # Make a release if
   # - there were changes and this is a scheduled job
