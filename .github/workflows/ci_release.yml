@@ -42,7 +42,13 @@ jobs:
   #     - uses: ./.github/actions/yamllint
 
   hadolint:
-    uses: ./.github/workflows/reusable_dockerfile_lint.yml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v2.1.0
+        with:
+          dockerfile: ${{ inputs.dockerfile }}
+          failure-threshold: info
 
   # Make a release if
   # - there were changes and this is a scheduled job

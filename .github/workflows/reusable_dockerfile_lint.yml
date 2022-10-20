@@ -1,0 +1,25 @@
+name: Dockerfile Lint
+
+on:
+  workflow_call:
+    inputs:
+      dockerfile:
+        required: false
+        type: string
+        description: "path to dockerfile"
+        default: "Dockerfile"
+      failure-threshold:
+        required: false
+        type: string
+        description: "error | warning | info (default) | style | ignore"
+        default: "info"
+
+jobs:
+  hadolint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v2.1.0
+        with:
+          dockerfile: ${{ inputs.dockerfile }}
+          failure-threshold: ${{ inputs.failure-threshold }}
