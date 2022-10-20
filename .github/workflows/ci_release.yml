@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hadolint/hadolint-action@v2.1.0
         with:
-          dockerfile: ${{ inputs.dockerfile }}
+          dockerfile: Dockerfile
           failure-threshold: info
 
   # Make a release if
