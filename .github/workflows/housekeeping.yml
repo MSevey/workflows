@@ -1,0 +1,22 @@
+name: Housekeeping
+
+on:
+  # triage new issues
+  issues:
+    types: [opened]
+  pull_request:
+
+jobs:
+  housekeeping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/housekeeping.yml@11-housekeeping-workflow
+        with:
+          secrets: inherit
+          run-labels: ${{ github.event_name == 'issues' }}
+          labels-to-add: "needs: triage"
+          # labels-to-remove: "test"
+          ignore-if-labeled: true
+          # run-projects: ${{ github.event_name == 'issues' }}
+          run-pr-checklist: ${{ github.event_name == 'pull_request' }}
+          # run-auto-request-review: ${{ github.event_name == 'pull_request' }}
