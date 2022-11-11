@@ -8,7 +8,7 @@ on:
 
 jobs:
   housekeeping:
-    uses: ./.github/workflows/housekeeping.yml
+    uses: ./.github/workflows/reusable_housekeeping.yml
     with:
       secrets: inherit
       run-labels: ${{ github.event_name == 'issues' }}
