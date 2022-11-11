@@ -17,9 +17,6 @@ name: Housekeeping
 
 on:
   workflow_call:
-    secrets:
-      token:
-        required: true
     inputs:
       run-labels:
         required: false
