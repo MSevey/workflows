@@ -10,7 +10,7 @@ jobs:
   housekeeping:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/housekeeping.yml@11-housekeeping-workflow
+      - uses: ./.github/workflows/housekeeping.yml@main
         with:
           secrets: inherit
           run-labels: ${{ github.event_name == 'issues' }}
