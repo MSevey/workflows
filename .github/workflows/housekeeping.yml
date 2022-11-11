@@ -16,5 +16,4 @@ jobs:
       # labels-to-remove: "test"
       ignore-if-labeled: true
       # run-projects: ${{ github.event_name == 'issues' }}
-      run-pr-checklist: ${{ github.event_name == 'pull_request' }}
       # run-auto-request-review: ${{ github.event_name == 'pull_request' }}
