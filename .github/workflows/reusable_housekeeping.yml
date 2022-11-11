@@ -17,9 +17,6 @@ name: Housekeeping
 
 on:
   workflow_call:
-    secrets:
-      token:
-        required: true
     inputs:
       run-labels:
         required: false
@@ -61,11 +58,6 @@ on:
         type: string
         description: "label operator (AND or NOT) for filtering labels for adding to project"
         default: ""
-      run-pr-checklist:
-        required: false
-        type: boolean
-        description: "Indicate if you would like to run the PR Checklist action"
-        default: false
       run-auto-request-review:
         required: false
         type: boolean
@@ -101,17 +93,6 @@ jobs:
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           labeled: ${{ inputs.project-labels }}
           label-operator: ${{ inputs.project-labels-operator }}
-
-  # See https://github.com/marketplace/actions/task-completed-checker for more
-  # information on how to use this action
-  pr-checklist:
-    if: ${{ inputs.run-pr-checklist }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: kentaro-m/task-completed-checker-action@v0.1.0
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
   # See https://github.com/marketplace/actions/auto-request-review for more
   # information on how to use this action
