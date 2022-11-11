@@ -105,7 +105,6 @@ jobs:
     if: ${{ inputs.run-pr-checklist }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - uses: kentaro-m/task-completed-checker-action@v0.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
