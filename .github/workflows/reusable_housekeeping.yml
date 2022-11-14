@@ -28,6 +28,11 @@ on:
         type: string
         description: "Comma separated list of labels to add"
         default: ""
+      labels-to-remove:
+        required: false
+        type: string
+        description: "Comma separated list of labels to remove"
+        default: ""
       ignore-if-labeled:
         required: false
         type: boolean
@@ -71,6 +76,7 @@ jobs:
       - uses: andymckay/labeler@master
         with:
           add-labels: ${{ inputs.labels-to-add }}
+          remove-labels: ${{ inputs.labels-to-remove }}
           ignore-if-labeled: ${{ inputs.ignore-if-labeled }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 

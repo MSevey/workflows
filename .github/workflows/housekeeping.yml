@@ -7,14 +7,21 @@ on:
   pull_request:
 
 jobs:
-  housekeeping:
+  housekeeping1:
     uses: ./.github/workflows/reusable_housekeeping.yml
     secrets: inherit
     with:
       run-labels: ${{ github.event_name == 'issues' }}
       labels-to-add: "needs: triage"
-      ignore-if-label: true
+      ignore-if-labeled: true
       run-projects: ${{ github.event_name == 'issues' }}
       project-url: "https://github.com/users/MSevey/projects/1"
       run-auto-request-review: ${{ github.event_name == 'pull_request' }}
       reviewer-config-file: "./github/reviewers.yml"
+
+  housekeeping2:
+    uses: ./.github/workflows/reusable_housekeeping.yml
+    secrets: inherit
+    with:
+      run-labels: ${{ github.event_name == 'issues' }}
+      labels-to-remove: "bug"
