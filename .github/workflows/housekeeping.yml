@@ -12,6 +12,9 @@ jobs:
     secrets: inherit
     with:
       run-labels: ${{ github.event_name == 'issues' }}
-      labels-to-remove: "bug" # not working??
-      # run-projects: ${{ github.event_name == 'issues' }}
-      # run-auto-request-review: ${{ github.event_name == 'pull_request' }}
+      labels-to-add: "needs: triage"
+      ignore-if-label: true
+      run-projects: ${{ github.event_name == 'issues' }}
+      project-url: "https://github.com/users/MSevey/projects/1"
+      run-auto-request-review: ${{ github.event_name == 'pull_request' }}
+      reviewer-config-file: "./github/reviewers.yml"
