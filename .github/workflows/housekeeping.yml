@@ -12,6 +12,6 @@ jobs:
     secrets: inherit
     with:
       run-labels: ${{ github.event_name == 'issues' }}
-      labels-to-remove: "bug"
+      labels-to-remove: "bug" # not working??
       # run-projects: ${{ github.event_name == 'issues' }}
       # run-auto-request-review: ${{ github.event_name == 'pull_request' }}

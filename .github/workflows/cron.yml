@@ -1,8 +1,9 @@
 name: Cron Jobs
 
 on:
-  schedule:
-    - cron: "23 7 * * *"
+  # schedule:
+  #   - cron: "23 7 * * *"
+  workflow_dispatch:
 
 jobs:
   cron-job:
