@@ -63,6 +63,11 @@ on:
         type: boolean
         description: "Indicate if you would like to run the auto request review action"
         default: false
+      reviewer-config-file:
+        required: false
+        type: string
+        description: "relative path to config file (default: ./github/reviewers.yml)"
+        default: "./github/reviewers.yml"
 
 jobs:
   # See https://github.com/marketplace/actions/simple-issue-labeler for more
