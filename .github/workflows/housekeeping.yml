@@ -30,7 +30,7 @@ jobs:
       # Projects
       run-projects: true
       project-url: "https://github.com/users/MSevey/projects/1"
-      project-labels: "Project"
+      project-labels: "project"
       # Reviewers
       run-auto-request-review: true
       reviewer-config-file: "./github/reviewers.yml"
