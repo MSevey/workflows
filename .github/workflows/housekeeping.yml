@@ -13,9 +13,11 @@ jobs:
     uses: ./.github/workflows/reusable_housekeeping.yml
     secrets: inherit
     with:
+      # Labels
       run-labels: true
       labels-to-add: "needs: triage"
       ignore-if-labeled: true
+      # Projects
       run-projects: true
       project-url: "https://github.com/users/MSevey/projects/1"
 
@@ -25,7 +27,10 @@ jobs:
     uses: ./.github/workflows/reusable_housekeeping.yml
     secrets: inherit
     with:
-      run-projects: ${{ github.event_name == 'pull_request' }}
+      # Projects
+      run-projects: true
+      project-url: "https://github.com/users/MSevey/projects/1"
       project-labels: "Project"
-      run-auto-request-review: ${{ github.event_name == 'pull_request' }}
+      # Reviewers
+      run-auto-request-review: true
       reviewer-config-file: "./github/reviewers.yml"
