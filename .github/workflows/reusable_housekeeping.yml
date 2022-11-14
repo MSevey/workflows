@@ -91,7 +91,7 @@ jobs:
     if: ${{ inputs.run-projects }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@RELEASE_VERSION
+      - uses: actions/add-to-project@v0.3.0
         with:
           project-url: ${{ inputs.project-url }}
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
