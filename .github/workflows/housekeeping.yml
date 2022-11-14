@@ -33,4 +33,4 @@ jobs:
       project-labels: "project"
       # Reviewers
       run-auto-request-review: true
-      reviewer-config-file: "./github/reviewers.yml"
+      # reviewer-config-file: "./github/reviewers.yml"
