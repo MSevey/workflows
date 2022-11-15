@@ -13,7 +13,7 @@ env:
 jobs:
   # calls housekeeping for issues
   housekeeping1:
-    if: ${{ github.event_name == 'issues' }}
+    if: contains(github.event.issue.title, 'EPIC')
     uses: ./.github/workflows/reusable_housekeeping.yml
     secrets: inherit
     # strategy:
@@ -26,7 +26,7 @@ jobs:
       # ignore-if-labeled: true
       # Projects
       run-projects: true
-      project-url: ${{ env.PROJECT_1 }}
+      project-url: ${{ env.PROJECT_2 }}
 
   # # calls housekeeping for PRs
   # housekeeping2:
