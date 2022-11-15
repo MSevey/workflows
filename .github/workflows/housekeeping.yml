@@ -6,19 +6,17 @@ on:
     types: [opened, edited]
   pull_request:
 
-env:
-  PROJECT_1: "https://github.com/users/MSevey/projects/1"
-  PROJECT_2: "https://github.com/users/MSevey/projects/2"
-
 jobs:
   # calls housekeeping for issues
   housekeeping1:
     if: contains(github.event.issue.title, 'EPIC')
     uses: ./.github/workflows/reusable_housekeeping.yml
     secrets: inherit
-    # strategy:
-    #   matrix:
-    #     project-url: ["${{ PROJECT_1 }}", "${{ PROJECT_2 }}"]
+    strategy:
+      matrix:
+        project-url:
+          - "https://github.com/users/MSevey/projects/1"
+          - "https://github.com/users/MSevey/projects/2"
     with:
       # Labels
       # run-labels: true
@@ -26,7 +24,7 @@ jobs:
       # ignore-if-labeled: true
       # Projects
       run-projects: true
-      project-url: ${{ env.PROJECT_2 }}
+      project-url: ${{ matrix.project-url }}
 
   # # calls housekeeping for PRs
   # housekeeping2:
