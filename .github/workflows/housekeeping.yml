@@ -16,9 +16,9 @@ jobs:
     if: ${{ github.event_name == 'issues' }}
     uses: ./.github/workflows/reusable_housekeeping.yml
     secrets: inherit
-    strategy:
-      matrix:
-        project-url: ["${{ PROJECT_1 }}", "${{ PROJECT_2 }}"]
+    # strategy:
+    #   matrix:
+    #     project-url: ["${{ PROJECT_1 }}", "${{ PROJECT_2 }}"]
     with:
       # Labels
       # run-labels: true
@@ -26,7 +26,7 @@ jobs:
       # ignore-if-labeled: true
       # Projects
       run-projects: true
-      project-url: ${{ matrix.project_url }}
+      project-url: ${{ env.PROJECT_1 }}
 
   # # calls housekeeping for PRs
   # housekeeping2:
