@@ -26,7 +26,7 @@ jobs:
       # ignore-if-labeled: true
       # Projects
       run-projects: true
-      project-url: ${{ env.PROJECT_2 }}
+      project-url: "${{ env.PROJECT_2 }}"
 
   # # calls housekeeping for PRs
   # housekeeping2:
