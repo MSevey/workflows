@@ -18,7 +18,7 @@ jobs:
     secrets: inherit
     strategy:
       matrix:
-        project_url: ["$PROJECT_1", "$PROJECT_2"]
+        project_url_env: [PROJECT_1, PROJECT_2]
     with:
       # Labels
       # run-labels: true
@@ -26,7 +26,7 @@ jobs:
       # ignore-if-labeled: true
       # Projects
       run-projects: true
-      project-url: ${{ matrix.project_url }}
+      project-url: ${{ env.[matrix.project_url_env] }}
 
   # # calls housekeeping for PRs
   # housekeeping2:
