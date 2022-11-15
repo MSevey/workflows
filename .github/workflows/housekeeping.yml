@@ -7,8 +7,8 @@ on:
   pull_request:
 
 env:
-  project1: "https://github.com/users/MSevey/projects/1"
-  project2: "https://github.com/users/MSevey/projects/2"
+  PROJECT_1: "https://github.com/users/MSevey/projects/1"
+  PROJECT_2: "https://github.com/users/MSevey/projects/2"
 
 jobs:
   # calls housekeeping for issues
@@ -18,7 +18,7 @@ jobs:
     secrets: inherit
     strategy:
       matrix:
-        project_url: ["${{ env.project1 }}", "${{ env.project2 }}"]
+        project_url: [$PROJECT_1, $PROJECT_2]
     with:
       # Labels
       # run-labels: true
