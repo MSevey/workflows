@@ -3,8 +3,12 @@ name: Housekeeping
 on:
   # triage new issues
   issues:
-    types: [opened]
+    types: [opened, edited]
   pull_request:
+
+env:
+  project1: "https://github.com/users/MSevey/projects/1"
+  project2: "https://github.com/users/MSevey/projects/2"
 
 jobs:
   # calls housekeeping for issues
@@ -12,25 +16,28 @@ jobs:
     if: ${{ github.event_name == 'issues' }}
     uses: ./.github/workflows/reusable_housekeeping.yml
     secrets: inherit
+    strategy:
+      matrix:
+        project_url: ["${{ env.project1 }}", "${{ env.project2 }}"]
     with:
       # Labels
-      run-labels: true
-      labels-to-add: "needs: triage"
-      ignore-if-labeled: true
+      # run-labels: true
+      # labels-to-add: "needs: triage"
+      # ignore-if-labeled: true
       # Projects
       run-projects: true
-      project-url: "https://github.com/users/MSevey/projects/1"
+      project-url: ${{ matrix.project_url }}
 
-  # calls housekeeping for PRs
-  housekeeping2:
-    if: ${{ github.event_name == 'pull_request' }}
-    uses: ./.github/workflows/reusable_housekeeping.yml
-    secrets: inherit
-    with:
-      # Projects
-      run-projects: true
-      project-url: "https://github.com/users/MSevey/projects/1"
-      project-labels: "project"
-      # Reviewers
-      run-auto-request-review: true
-      # reviewer-config-file: "./github/reviewers.yml"
+  # # calls housekeeping for PRs
+  # housekeeping2:
+  #   if: ${{ github.event_name == 'pull_request' }}
+  #   uses: ./.github/workflows/reusable_housekeeping.yml
+  #   secrets: inherit
+  #   with:
+  #     # Projects
+  #     run-projects: true
+  #     project-url: "https://github.com/users/MSevey/projects/1"
+  #     project-labels: "project"
+  #     # Reviewers
+  #     run-auto-request-review: true
+  #     # reviewer-config-file: "./github/reviewers.yml"
