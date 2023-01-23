@@ -55,11 +55,6 @@ on:
         type: string
         description: "label operator (AND or NOT) for filtering labels for adding to project"
         default: ""
-      project-pat:
-        required: false
-        type: string
-        description: "PAT needed for adding issues to projects"
-        default: ${{ secrets.ADD_TO_PROJECT_PAT }}
       run-auto-request-review:
         required: false
         type: boolean
