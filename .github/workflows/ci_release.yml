@@ -48,7 +48,7 @@ jobs:
       - uses: hadolint/hadolint-action@v2.0.0
         with:
           dockerfile: Dockerfile
-          failure-threshold: info
+          # failure-threshold: info
 
   # Make a release if
   # - there were changes and this is a scheduled job
