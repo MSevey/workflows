@@ -9,14 +9,14 @@ on:
 jobs:
   # calls housekeeping for issues
   housekeeping1:
-    if: contains(github.event.issue.title, 'EPIC')
+    # if: contains(github.event.issue.title, 'EPIC')
     uses: ./.github/workflows/reusable_housekeeping.yml
     secrets: inherit
-    strategy:
-      matrix:
-        project-url:
-          - "https://github.com/users/MSevey/projects/1"
-          - "https://github.com/users/MSevey/projects/2"
+    # strategy:
+    #   matrix:
+    #     project-url:
+    #       - "https://github.com/users/MSevey/projects/1"
+    #       - "https://github.com/users/MSevey/projects/2"
     with:
       # Labels
       # run-labels: true
@@ -24,7 +24,7 @@ jobs:
       # ignore-if-labeled: true
       # Projects
       run-projects: true
-      project-url: ${{ matrix.project-url }}
+      project-url: "https://github.com/orgs/celestiaorg/projects/22"
 
   # # calls housekeeping for PRs
   # housekeeping2:

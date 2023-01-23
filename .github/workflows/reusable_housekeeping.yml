@@ -55,6 +55,11 @@ on:
         type: string
         description: "label operator (AND or NOT) for filtering labels for adding to project"
         default: ""
+      project-pat:
+        required: false
+        type: string
+        description: "PAT needed for adding issues to projects"
+        default: ${{ secrets.ADD_TO_PROJECT_PAT }}
       run-auto-request-review:
         required: false
         type: boolean
@@ -85,7 +90,7 @@ jobs:
       - uses: actions/add-to-project@v0.3.0
         with:
           project-url: ${{ inputs.project-url }}
-          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          github-token: ${{ inputs.project-pat }}
           labeled: ${{ inputs.project-labels }}
           label-operator: ${{ inputs.project-labels-operator }}
 
