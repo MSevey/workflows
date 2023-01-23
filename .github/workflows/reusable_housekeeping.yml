@@ -90,7 +90,7 @@ jobs:
       - uses: actions/add-to-project@v0.3.0
         with:
           project-url: ${{ inputs.project-url }}
-          github-token: ${{ inputs.project-pat }}
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT_CELESTIA }}
           labeled: ${{ inputs.project-labels }}
           label-operator: ${{ inputs.project-labels-operator }}
 
