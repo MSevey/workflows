@@ -25,6 +25,7 @@ jobs:
       # Projects
       run-projects: true
       project-url: "https://github.com/orgs/celestiaorg/projects/22"
+      project-pat: ${{ secrets.ADD_TO_PROJECT_PAT_CELESTIA }}
 
   # # calls housekeeping for PRs
   # housekeeping2:
