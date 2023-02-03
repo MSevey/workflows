@@ -16,3 +16,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
+      - run: "echo latest tag: '${{ steps.get_latest_release.outputs.data.tag_name }}'"
+      - uses: octokit/request-action@v2.x
+        id: get_latest_commit
+        with:
+          route: GET /repos/{owner}/{repo}/git/ref/tags/{tag_name}
+          owner: celestiaorg
+          repo: celestia-node
+          tag_name: ${{ steps.get_latest_release.outpus.data.tag_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo latest commit: '${{ steps.get_latest_release.outputs.data }}'"
