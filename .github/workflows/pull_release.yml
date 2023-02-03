@@ -1,0 +1,25 @@
+name: Release Information
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run the actions/checkout
+        uses: actions/checkout@v3
+
+      - name: Download asset using release-collection action
+        id: download_stuff
+        uses: MikeHamilton-RW/release-collector@v1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: celestiaorg/celestia-node
+          RELEASE_BRANCH: main
+
+      - name: Print release notes to markdown file
+        run: |
+          printf "# "${{ steps.download_stuff.outputs.ARTIFACT_NAME }}"\n\n" >> ReleaseNotes.md
+          printf ${{ steps.download_stuff.outputs.RELEASE_NOTES }}"\n\n\n" >> ReleaseNotes.md
