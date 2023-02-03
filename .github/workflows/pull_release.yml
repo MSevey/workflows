@@ -6,13 +6,20 @@ on:
 jobs:
   logLatestRelease:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo: [celestia-node, celesita-core, celesita-app]
+    env:
+      owner: celestiaorg
+
     steps:
+      - run: "echo Pulling info from: '${{ env.owner }}/${{ matrix.repo }}'"
       - uses: octokit/request-action@v2.x
         id: get_latest_release
         with:
           route: GET /repos/{owner}/{repo}/releases/latest
-          owner: celestiaorg
-          repo: celestia-node
+          owner: ${{ env.owner }}
+          repo: ${{ matrix.repo }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
@@ -21,8 +28,8 @@ jobs:
         id: get_latest_commit
         with:
           route: GET /repos/{owner}/{repo}/git/ref/tags/${{ fromJSON(steps.get_latest_release.outputs.data).tag_name }}
-          owner: celestiaorg
-          repo: celestia-node
+          owner: ${{ env.owner }}
+          repo: ${{ matrix.repo }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo latest commit: '${{ fromJSON(steps.get_latest_commit.outputs.data).object.sha }}'"
