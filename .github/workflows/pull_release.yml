@@ -10,10 +10,11 @@ jobs:
       matrix:
         repo: [celestia-node, celestia-core, celestia-app]
     steps:
-      - run: rm '${{ matrix.repo }}_latest.txt'
+      - run: rm -rf '${{ matrix.repo }}_latest.txt'
       - run: touch '${{ matrix.repo }}_latest.txt'
 
   logLatestRelease:
+    needs: resetTagFile
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -47,6 +48,7 @@ jobs:
           echo ${{ fromJSON(steps.get_latest_commit.outputs.data).object.sha }} >> '${{ matrix.repo }}_latest.txt'
 
   createPR:
+    needs: logLatestRelease
     runs-on: ubuntu-latest
     permissions:
       contents: write
