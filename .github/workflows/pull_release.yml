@@ -4,6 +4,15 @@ on:
   workflow_dispatch:
 
 jobs:
+  resetTagFile:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo: [celestia-node, celestia-core, celestia-app]
+    steps:
+      - run: rm '${{ matrix.repo }}_latest.txt'
+      - run: touch '${{ matrix.repo }}_latest.txt'
+
   logLatestRelease:
     runs-on: ubuntu-latest
     strategy:
@@ -32,3 +41,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo latest commit: '${{ fromJSON(steps.get_latest_commit.outputs.data).object.sha }}'"
+      - run: |
+          echo ${{ matrix.repo }} >> '${{ matrix.repo }}_latest.txt'
+          echo ${{ fromJSON(steps.get_latest_release.outputs.data).tag_name }} >> '${{ matrix.repo }}_latest.txt'
+          echo ${{ fromJSON(steps.get_latest_commit.outputs.data).object.sha }} >> '${{ matrix.repo }}_latest.txt'
+
+  createPR:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "[automated GH action] update latest release tags and commit sha"
+          title: "[GH Action] Update release tags and commit SHAs"
