@@ -25,4 +25,4 @@ jobs:
           repo: celestia-node
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest commit: '${{ steps.get_latest_commit.outputs.data }}'"
+      - run: "echo latest commit: '${{ fromJSON(steps.get_latest_commit.outputs.data).object.sha }}'"
