@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: [celestia-node, celesita-core, celesita-app]
+        repo: [celestia-node, celestia-core, celestia-app]
     env:
       owner: celestiaorg
 
@@ -22,7 +22,6 @@ jobs:
           repo: ${{ matrix.repo }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
       - run: "echo latest tag: '${{ fromJSON(steps.get_latest_release.outputs.data).tag_name }}'"
       - uses: octokit/request-action@v2.x
         id: get_latest_commit
