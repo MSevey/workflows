@@ -4,24 +4,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  resetTagFile:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        repo: [celestia-node, celestia-core, celestia-app]
-    steps:
-      - run: rm -rf '${{ matrix.repo }}_latest.txt'
-      - run: touch '${{ matrix.repo }}_latest.txt'
-
   logLatestRelease:
-    needs: resetTagFile
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: [celestia-node, celestia-core, celestia-app]
+        repo: [celestia-app, celestia-core, celestia-node]
     env:
       owner: celestiaorg
-
+    outputs:
+      celestia-app_latest_tag: ${{ steps.get_latest_release.outputs.celestia-app_latest_tag }}
+      celestia-app_latest_sha: ${{ steps.get_latest_release.outputs.celestia-app_latest_sha }}
+      celestia-core_latest_tag: ${{ steps.get_latest_release.outputs.celestia-core_latest_tag }}
+      celestia-core_latest_sha: ${{ steps.get_latest_release.outputs.celestia-core_latest_sha }}
+      celestia-node_latest_tag: ${{ steps.get_latest_release.outputs.celestia-node_latest_tag }}
+      celestia-node_latest_sha: ${{ steps.get_latest_release.outputs.celestia-node_latest_sha }}
     steps:
       - run: "echo Pulling info from: '${{ env.owner }}/${{ matrix.repo }}'"
       - uses: octokit/request-action@v2.x
@@ -45,6 +41,9 @@ jobs:
       - run: |
           echo ${{ fromJSON(steps.get_latest_release.outputs.data).tag_name }} >> '${{ matrix.repo }}_latest.txt'
           echo ${{ fromJSON(steps.get_latest_commit.outputs.data).object.sha }} >> '${{ matrix.repo }}_latest.txt'
+      - run: |
+          echo "${{matrix.repo}}_latest_tag=${{ fromJSON(steps.get_latest_release.outputs.data).tag_name }}" >> $GITHUB_OUTPUT
+          echo "${{matrix.repo}}_latest_sha=${{ fromJSON(steps.get_latest_commit.outputs.data).object.sha }}" >> $GITHUB_OUTPUT
 
   createPR:
     needs: logLatestRelease
@@ -54,7 +53,13 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v3
-      - run: echo test > output.txt
+      - run: |
+          echo ${{ needs.logLatestRelease.outputs.celestia-app_latest_tag }} > celestia-app_latest.txt
+          echo ${{ needs.logLatestRelease.outputs.celestia-app_latest_sha }} >> celestia-app_latest.txt
+          echo ${{ needs.logLatestRelease.outputs.celestia-core_latest_tag }} > celestia-core_latest.txt
+          echo ${{ needs.logLatestRelease.outputs.celestia-core_latest_sha }} >> celestia-core_latest.txt
+          echo ${{ needs.logLatestRelease.outputs.celestia-node_latest_tag }} > celestia-node_latest.txt
+          echo ${{ needs.logLatestRelease.outputs.celestia-core_latest_sha }} >> celestia-node_latest.txt
       - uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "[automated GH action] update latest release tags and commit sha"
