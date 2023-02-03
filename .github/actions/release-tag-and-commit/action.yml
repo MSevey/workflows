@@ -1,0 +1,19 @@
+name: "Release Tag and Commit"
+description: |
+  Pull the latest release tag and commit from a Github Repo
+inputs:
+  github_user:
+    description: "The github username or github organization name"
+    required: true
+  github_repo:
+    description: "The target github repository"
+    required: true
+outputs:
+  latest_release_tag:
+    description: "The latest release tag"
+  latest_tag_commit:
+    description: "The latest release tag commit"
+
+runs:
+  using: "node16"
+  main: "dist/index.js"
