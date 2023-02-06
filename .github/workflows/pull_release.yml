@@ -2,6 +2,23 @@ name: Release Information
 
 on:
   workflow_dispatch:
+    # Inputs the workflow accepts. These are the options visible when manually
+    # triggering the workflow
+    inputs:
+      # `network` is the name of the input and is customizable. We can name it
+      # whatever we want. Just note that if we change the name here we will need
+      # to change the name where it is referenced
+      network:
+        # Friendly description to be shown in the UI instead of 'network'
+        description: "Which network are we updating the latest tag information"
+        # Input has to be provided for the workflow to run
+        required: true
+        type: choice
+        # These are the drop down options, so we can add other networks, like
+        # mainnet for instance.
+        options:
+          - arabica
+          - mocha
 
 jobs:
   logLatestRelease:
@@ -64,6 +81,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Write latest tags and commit SHAs to txt files
         run: |
+          echo ${{ needs.logLatestRelease.outputs.celestia-app_latest_tag }} > ${{inputs.network}}_latest.txt
+          echo ${{ needs.logLatestRelease.outputs.celestia-app_latest_sha }} >> ${{inputs.network}}_latest.txt
           echo ${{ needs.logLatestRelease.outputs.celestia-app_latest_tag }} > celestia-app_latest.txt
           echo ${{ needs.logLatestRelease.outputs.celestia-app_latest_sha }} >> celestia-app_latest.txt
           echo ${{ needs.logLatestRelease.outputs.celestia-core_latest_tag }} > celestia-core_latest.txt
