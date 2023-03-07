@@ -1,0 +1,16 @@
+name: issue-automation
+on:
+  pull_request:
+    types: [opened]
+jobs:
+  automate-issues-labels:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: PR labeling
+        uses: andymckay/labeler@master
+        with:
+          add-labels: "mynewlabel"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
