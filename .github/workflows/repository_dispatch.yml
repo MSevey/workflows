@@ -24,7 +24,7 @@ jobs:
           repo: workflows-2
           owner: MSevey
           workflow: repository_dispatch.yml
-          workflow_inputs: '{ "distinct_id": "123" }' # Optional
+          workflow_inputs: '{ "distinct_id": ${{inputs.myEvent}} }' # Optional
           workflow_timeout_seconds: 120 # Default: 300
 
       - name: Use the output run ID
