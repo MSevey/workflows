@@ -1,6 +1,7 @@
 name: Repository Dispatch
 run-name: Event Trigger ${{  }}
 on:
+  push:
   workflow_dispatch:
     inputs:
       myEvent:
