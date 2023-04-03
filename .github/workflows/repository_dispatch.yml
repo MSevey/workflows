@@ -42,6 +42,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Delay for api to update
+        run: sleep 2
+
       - name: Check conclusion
         run: "echo latest tag: '${{ fromJSON(steps.get_run_conclusion.outputs.data).conclusion }}'"
 
