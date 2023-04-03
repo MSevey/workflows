@@ -32,4 +32,4 @@ jobs:
           workflow_timeout_seconds: 120 # Default: 300
 
       - name: Use the output run ID
-        run: echo ${{fromJSON(steps.return_dispatch.outputs)}}
+        run: echo ${{steps.return_dispatch.outputs}}
