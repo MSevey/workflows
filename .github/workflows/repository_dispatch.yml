@@ -1,5 +1,4 @@
 name: Repository Dispatch
-# run-name: Event Trigger ${{  }}
 on:
   push:
   workflow_dispatch:
@@ -9,15 +8,13 @@ on:
         required: true
         type: choice
         options:
-          - my-event
-          - fail
-          - pass-other
+          - trigger
 
 jobs:
   triggerMyEvent:
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
+    # permissions:
+    #   actions: write
     steps:
       - name: Dispatch an action and get the run ID
         uses: codex-/return-dispatch@v1
