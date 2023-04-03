@@ -50,7 +50,7 @@ jobs:
 
       - name: Fail if not successful
         if: ${{ fromJSON(steps.get_run_conclusion.outputs.data).conclusion != 'success' }}
-        run: echo 1
+        run: exit 1
         # Alternative if descriptive exit code is helpful
         # uses: actions/github-script@v3
         # with:
