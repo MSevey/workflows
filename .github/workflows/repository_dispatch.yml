@@ -14,6 +14,8 @@ on:
 jobs:
   triggerMyEvent:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
       - name: Dispatch an action and get the run ID
         uses: codex-/return-dispatch@v1
