@@ -13,8 +13,6 @@ on:
 jobs:
   triggerMyEvent:
     runs-on: ubuntu-latest
-    # permissions:
-    #   actions: write
     steps:
       - name: Dispatch an action and get the run ID
         uses: codex-/return-dispatch@v1
@@ -25,7 +23,7 @@ jobs:
           repo: workflows-2
           owner: MSevey
           workflow: repository_dispatch.yml
-          # workflow_inputs: '{ "distinct_id": "${{inputs.myEvent}}" }' # Optional
+          workflow_inputs: '{ "key": "my value" }' # Optional
           workflow_timeout_seconds: 120 # Default: 300
 
       - name: Use the output run ID
