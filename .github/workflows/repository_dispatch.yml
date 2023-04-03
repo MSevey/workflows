@@ -47,3 +47,12 @@ jobs:
 
       - name: Check conclusion
         run: "echo latest tag: '${{ fromJSON(steps.get_run_conclusion.outputs.data).conclusion }}'"
+
+      - name: Fail if not successful
+        if: ${{ fromJSON(steps.get_run_conclusion.outputs.data).conclusion != 'success' }}
+        run: echo 1
+        # Alternative if descriptive exit code is helpful
+        # uses: actions/github-script@v3
+        # with:
+        #   script: |
+        #       core.setFailed('Coverage test below tolerance')
