@@ -12,6 +12,14 @@ on:
 
 jobs:
   triggerMyEvent:
+    # these evn values can turn into inputs for a reuseable workflow
+    env:
+      owner: MSevey
+      repo: workflows-2
+      ref: main
+      workflow: repository_dispatch.yml
+      workflow_inputs: '{ "key": "my value" }'
+      workflow_timeout_seconds: 120
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch an action and get the run ID
@@ -20,11 +28,11 @@ jobs:
         with:
           token: ${{ secrets.PAT_REPO_DISPATCH }} # Note this is NOT GITHUB_TOKEN but a PAT
           ref: main # or refs/heads/target_branch
-          repo: workflows-2
-          owner: MSevey
-          workflow: repository_dispatch.yml
-          workflow_inputs: '{ "key": "my value" }' # Optional
-          workflow_timeout_seconds: 120 # Default: 300
+          repo: ${{env.repo}}
+          owner: ${{env.owner}}
+          workflow: ${{env.workflow}}
+          workflow_inputs: ${{ env.workflow_inputs }} # Optional
+          workflow_timeout_seconds: ${{env.workflow_timeout_seconds}} # Default: 300
 
       - name: Use the output run ID
         run: echo '${{toJSON(steps.return_dispatch.outputs)}}'
@@ -34,8 +42,8 @@ jobs:
         id: get_run_conclusion
         with:
           route: GET /repos/{owner}/{repo}/actions/runs/{run_id}
-          owner: MSevey
-          repo: workflows-2
+          owner: ${{env.owner}}
+          repo: ${{env.repo}}
           run_id: ${{steps.return_dispatch.outputs.run_id}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
