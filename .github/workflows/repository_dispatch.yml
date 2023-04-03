@@ -1,0 +1,24 @@
+name: Repository Dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      myEvent:
+        description: "Dispatch Event Type"
+        required: true
+        type: choice
+        options:
+          - my-event
+          - fail
+          - pass-other
+
+jobs:
+  triggerMyEvent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT_REPO_DISPATCH }}
+          repository: msevey/workflows-2
+          event-type: ${{ inputs.myEvent }}
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
