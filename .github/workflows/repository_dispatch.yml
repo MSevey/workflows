@@ -15,10 +15,17 @@ jobs:
   triggerMyEvent:
     runs-on: ubuntu-latest
     steps:
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v2
+      - name: Dispatch an action and get the run ID
+        uses: codex-/return-dispatch@v1
+        id: return_dispatch
         with:
-          token: ${{ secrets.PAT_REPO_DISPATCH }}
-          repository: msevey/workflows-2
-          event-type: ${{ inputs.myEvent }}
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+          token: ${{ secrets.PAT_REPO_DISPATCH }} # Note this is NOT GITHUB_TOKEN but a PAT
+          ref: main # or refs/heads/target_branch
+          repo: workflows-2
+          owner: MSevey
+          workflow: repository_dispatch.yml
+          workflow_inputs: '{ "distinct_id": "123" }' # Optional
+          workflow_timeout_seconds: 120 # Default: 300
+
+      - name: Use the output run ID
+        run: echo ${{steps.return_dispatch.outputs.run_id}}
