@@ -52,6 +52,15 @@ jobs:
           dockerfile: Dockerfile
           # failure-threshold: info
 
+  test:
+    if: |
+      github.event_name == 'push' &&
+      contains(github.ref, 'refs/heads/main') &&
+      github.event.label.name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello World"
+
   # Make a release if
   # - there were changes and this is a scheduled job
   # - This is a manually trigger job, i.e. workflow_dispatch
