@@ -52,7 +52,7 @@ jobs:
   #         dockerfile: Dockerfile
   #         # failure-threshold: info
 
-  debug:
+  debug_inputs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{toJSON(github)}}"
