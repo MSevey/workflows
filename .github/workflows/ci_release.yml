@@ -67,7 +67,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
-            const prLabels = prData.data[0].labels.map(label => label.name);
+            const prLabels = prData.data[0]result.labels.map(label => label.name);
             const hasReleaseLabel = prLabels.includes('release');
             return { labels: prLabels, hasReleaseLabel };
       - id: set-outputs
