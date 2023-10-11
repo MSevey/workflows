@@ -114,5 +114,3 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           version-bump: ${{inputs.version}}
-          append-tag: ${{ inputs.rc }}
-          is-prerelease: "${{ inputs.is-prerelease }}"
