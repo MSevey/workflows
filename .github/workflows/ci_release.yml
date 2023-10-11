@@ -66,12 +66,14 @@ jobs:
                 repo: context.repo.repo,
               })
             ).data[0];
-      - run: echo "${{ fromJSON(steps.get_pr_data.outputs.result) }}"
+      - run: echo "${{ steps.get_pr_data.outputs.result }}"
+      - run: echo "${{ fromJSON(steps.get_pr_data.outputs.result).labels }}"
+      - run: echo "${{ join(fromJSON(steps.get_pr_data.outputs.result).labels, ', ') }}"
       - name: Pull Request data
         run: |
           echo '${{ fromJson(steps.get_pr_data.outputs.result).number }}'
           echo '${{ fromJSON(steps.get_pr_data.outputs.result).title }}'
-          echo '${{ contains(fromJSON(fromJSON(steps.get_pr_data.outputs.result).labels), 'release') }}'
+          echo '${{ contains(fromJSON(steps.get_pr_data.outputs.result).labels, 'release') }}'
 
   test:
     if: |
