@@ -59,6 +59,7 @@ jobs:
       has_release_label: ${{ steps.set-outputs.outputs.has_release_label }}
     steps:
       - uses: actions/github-script@v6
+        if: ${{ github.event_name == 'push' }}
         id: get_pr_data
         with:
           script: |
@@ -77,8 +78,8 @@ jobs:
             return { labels: prLabels, hasReleaseLabel };
       - id: set-outputs
         run: |
-          echo "label_matrix=$(echo ${{ steps.get_pr_data.outputs.labels }}" >> "$GITHUB_OUTPUT"
-          echo "has_release_label=$(echo ${{ steps.get_pr_data.outputs.hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
+          echo "label_matrix=${{ steps.get_pr_data.outputs.labels }}" >> "$GITHUB_OUTPUT"
+          echo "has_release_label=${{ steps.get_pr_data.outputs.hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
 
   debug_inputs:
     runs-on: ubuntu-latest
@@ -113,5 +114,3 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           version-bump: ${{inputs.version}}
-          append-tag: ${{ inputs.rc }}
-          is-prerelease: "${{ inputs.is-prerelease }}"
