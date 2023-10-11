@@ -66,12 +66,12 @@ jobs:
                 repo: context.repo.repo,
               })
             ).data[0];
-      - run: echo "${{ toJSON(steps.get_pr_data.outputs).result }}"
+      - run: echo "${{ toJSON(steps.get_pr_data.outputs.result) }}"
       - name: Pull Request data
         run: |
           echo '${{ fromJson(steps.get_pr_data.outputs.result).number }}'
-          echo '${{ fromJson(steps.get_pr_data.outputs.result).title }}'
-          echo '${{ contains(fromJson(steps.get_pr_data.outputs.result).labels, 'release') }}'
+          echo '${{ fromJSON(steps.get_pr_data.outputs.result).title }}'
+          echo '${{ contains(fromJSON(fromJSON(steps.get_pr_data.outputs.result).labels), 'release') }}'
       - run: echo "${{ toJSON(github) }}"
 
   test:
