@@ -55,6 +55,22 @@ jobs:
   debug_inputs:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/github-script@v6
+        id: get_pr_data
+        with:
+          script: |
+            return (
+              await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                commit_sha: context.sha,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              })
+            ).data[0];
+      - run: echo "${{toJSON(steps.get_pr_data.outputs)}}"
+      - name: Pull Request data
+        run: |
+          echo '${{ toJson(steps.get_pr_data.outputs.result).number }}'
+          echo '${{ toJson(steps.get_pr_data.outputs.result).title }}'
       - run: echo "${{toJSON(github)}}"
 
   test:
