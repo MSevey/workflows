@@ -1,6 +1,6 @@
 name: Repository Dispatch
 on:
-  push:
+  # push:
   workflow_dispatch:
     inputs:
       myEvent:
