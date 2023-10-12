@@ -75,7 +75,7 @@ jobs:
             const hasReleaseLabel = prLabels.includes('release');
             console.log('hasReleaseLabel:', hasReleaseLabel);
             return { hasReleaseLabel };
-      - run: echo ${{ toJSON(steps.get_pr_data.outputs.result) }}
+      - run: echo "has_release_label=${{ fromJSON(steps.get_pr_data.outputs.result).hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
 
   debug_inputs:
     runs-on: ubuntu-latest
