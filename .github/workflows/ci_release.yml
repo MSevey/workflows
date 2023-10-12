@@ -76,6 +76,7 @@ jobs:
             console.log('hasReleaseLabel:', hasReleaseLabel);
             return { hasReleaseLabel };
       - id: set-outputs
+        if: steps.get_pr_data.outputs.result != null
         run: echo "has_release_label=${{ fromJSON(steps.get_pr_data.outputs.result).hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
 
   debug_inputs:
