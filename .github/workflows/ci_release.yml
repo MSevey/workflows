@@ -78,8 +78,8 @@ jobs:
             return { labels: prLabels, hasReleaseLabel };
       - id: set-outputs
         run: |
-          echo "label_matrix=${{ steps.get_pr_data.outputs.labels }}" >> "$GITHUB_OUTPUT"
-          echo "has_release_label=${{ steps.get_pr_data.outputs.hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
+          echo "label_matrix=${{ steps.get_pr_data.output.labels }}" >> "$GITHUB_OUTPUT"
+          echo "has_release_label=${{ steps.get_pr_data.output.hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
 
   debug_inputs:
     runs-on: ubuntu-latest
