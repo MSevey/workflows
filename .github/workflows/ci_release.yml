@@ -55,8 +55,8 @@ jobs:
   get_labels:
     runs-on: ubuntu-latest
     outputs:
-      label_matrix: ${{ steps.set-outputs.outputs.label_matrix }}
-      has_release_label: ${{ steps.set-outputs.outputs.has_release_label }}
+      label_matrix: ${{ steps.get_pr_data.outputs.labels }}
+      has_release_label: ${{ steps.get_pr_data.outputs.hasReleaseLabel }}
     steps:
       - uses: actions/github-script@v6
         if: ${{ github.event_name == 'push' }}
@@ -75,11 +75,10 @@ jobs:
             console.log('prLabels:', prLabels);
             const hasReleaseLabel = prLabels.includes('release');
             console.log('hasReleaseLabel:', hasReleaseLabel);
-            return { labels: prLabels, hasReleaseLabel };
-      - id: set-outputs
-        run: |
-          echo "label_matrix=${{ steps.get_pr_data.output.labels }}" >> "$GITHUB_OUTPUT"
-          echo "has_release_label=${{ steps.get_pr_data.output.hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
+            return {
+              label_matrix: prLabels.join(','),
+              has_release_label: hasReleaseLabel.toString()
+            };
 
   debug_inputs:
     runs-on: ubuntu-latest
