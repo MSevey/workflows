@@ -82,7 +82,6 @@ jobs:
     needs: get_labels
     steps:
       - run: |
-          echo '${{ needs.get_labels.outputs.label_matrix }}'
           echo '${{ needs.get_labels.outputs.has_release_label }}'
 
   test:
