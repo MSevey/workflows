@@ -1,27 +1,14 @@
-# This workflow is an example of a combination of automatic and manual release.
-# The triggers are:
-#   - Push
-#   - Schedule
-#   - Workflow Dispatch
-#
-# This workflow uses the `if` conditions to control when the CI runs versus when
-# a release is also created.
-#
-# The CI runs when pull requests are created and also when code is merged into
-# main, i.e. push events to main.
-#
-# It will run nightly at 1:15am, on those nightly runs, if there have been
-# changes since the last release, it will also auto bump the patch release.
-#
-# Lastly, it will trigger from manually workflow dispatches.
 name: CI and Release
 on:
   push:
     branches:
       - main
+    # Trigger on version tags
     tags:
-      - v*
+      - 'v[0-9]+\.[0-9]+\.[0-9]+'
+      - 'v[0-9]+\.[0-9]+\.[0-9]+-rc(?:[0-9]+|\.[0-9]+)'
   pull_request:
+  merge_group:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
@@ -37,70 +24,48 @@ on:
           - major
 
 jobs:
-  # yamllint:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: ./.github/actions/yamllint
-
-  # hadolint:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: hadolint/hadolint-action@v2.0.0
-  #       with:
-  #         dockerfile: Dockerfile
-  #         # failure-threshold: info
-
-  prepare-env:
-    runs-on: "ubuntu-latest"
+  setup:
+    runs-on: ubuntu-latest
+    env:
+      # use consistent go version throughout pipeline here
+      GO_VERSION: "1.20"
     outputs:
-      build_for_pr: ${{ steps.setting_logic.outputs.build_for_pr }}
-      build_for_merge: ${{ steps.setting_logic.outputs.build_for_merge }}
-      not_a_fork: ${{ steps.setting_logic.outputs.not_a_fork }}
+      go-version: ${{ steps.set-vars.outputs.go-version }}
     steps:
-      - name: Checkout
-        uses: "actions/checkout@v4"
+      - name: Set go version
+        id: set-vars
+        run: echo "go-version=${{env.GO_VERSION}}" >> "$GITHUB_OUTPUT"
 
-      - name: Add logic to ENV
-        id: setting_logic
-        run: |
-          # yamllint disable
-          echo "build_for_pr=${{ github.event_name == 'pull_request' }}" >> "$GITHUB_OUTPUT"
-          echo "build_for_merge=${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v') }}" >> "$GITHUB_OUTPUT"
-          echo "not_a_fork=${{ github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name }}" >> "$GITHUB_OUTPUT"
-          # yamllint enable
+  lint:
+    needs: [setup]
+    uses: ./.github/workflows/lint.yml
+    with:
+      go-version: ${{ needs.setup.outputs.go-version }}
 
-  # Log the key inputs to the logic as well a the outputs. We check that
-  # build_for_pr and build_for_merge are never equal as that would indicate a
-  # bug.
-  logic-check:
-    needs: prepare-env
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: Log logic
-        run: |
-          echo "github.event_name: ${{ github.event_name }}"
-          echo "github.ref: ${{ github.ref }}"
-          echo "github.event.pull_request: ${{ toJSON(github.event.pull_request) }}"
-          echo "head repo: ${{ github.event.pull_request.head.repo.full_name }}"
-          echo "base repo: ${{ github.event.pull_request.base.repo.full_name }}"
-          echo "build_for_pr: ${{ needs.prepare-env.outputs.build_for_pr }}"
-          echo "build_for_merge: ${{ needs.prepare-env.outputs.build_for_merge }}"
-          echo "not_a_fork: ${{ needs.prepare-env.outputs.not_a_fork }}"
-      - name: Check logic
-        if: ${{ needs.prepare-env.outputs.build_for_pr == needs.prepare-env.outputs.build_for_merge }}
-        run: |
-          echo "Failing step due to build_for_pr == build_for_merge"
-          exit 1
+  test:
+    needs: [setup]
+    uses: ./.github/workflows/test.yml
+    with:
+      go-version: ${{ needs.setup.outputs.go-version }}
 
-  get_labels:
+  proto:
+    uses: ./.github/workflows/proto.yml
+
+  # get_merged_pr_labels uses the listPullRequestsAssociatedWithCommit API
+  # endpoint to get the PR information for the commit during a push event. Once
+  # the PR information is received, we check to see if the create-release label
+  # was added to the pr.
+  get_merged_pr_labels:
     runs-on: ubuntu-latest
     outputs:
       has_release_label: ${{ steps.set-outputs.outputs.has_release_label }}
     steps:
-      - uses: actions/github-script@v6
+      # We only want to run this step on a push event, otherwise this will error
+      # out as the result is null. We have the if condition here as to not block
+      # steps that rely on this step and others if this step is skipped.
+      - name: Query listPullRequestsAssociatedWithCommit for the PR information
         if: ${{ github.event_name == 'push' }}
+        uses: actions/github-script@v6
         id: get_pr_data
         with:
           script: |
@@ -109,47 +74,32 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
-            console.log('prData:', prData);
             const pr = prData.data[0];
-            console.log('pr:', pr);
             const prLabels = pr ? pr.labels.map(label => label.name) : [];
-            console.log('prLabels:', prLabels);
-            const hasReleaseLabel = prLabels.includes('release');
-            console.log('hasReleaseLabel:', hasReleaseLabel);
+            const hasReleaseLabel = prLabels.includes('create-release');
             return { hasReleaseLabel };
-      - id: set-outputs
+      # Only run if the result is not null. We add this check so that the CI
+      # does not show a failure when the previous step is skipped.
+      - name: Set the outputs
         if: steps.get_pr_data.outputs.result != null
+        id: set-outputs
         run: echo "has_release_label=${{ fromJSON(steps.get_pr_data.outputs.result).hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
 
-  debug_inputs:
+  # Make a release if this is a manually trigger job, i.e. workflow_dispatch, or
+  # there was a merged pr with the create-release label
+  release:
+    needs: [lint, test, proto, get_merged_pr_labels]
     runs-on: ubuntu-latest
-    needs: get_labels
-    steps:
-      - run: |
-          echo '${{ needs.get_labels.outputs.has_release_label }}'
-
-  test:
-    needs: get_labels
     if: |
+      github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' &&
       contains(github.ref, 'refs/heads/main') &&
-      needs.get_labels.outputs.has_release_label)
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Hello World"
-
-  # Make a release if
-  # - there were changes and this is a scheduled job
-  # - This is a manually trigger job, i.e. workflow_dispatch
-  release:
-    # needs: yamllint
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && contains(github.ref, 'refs/tags/')) }}
+      needs.get_merged_pr_labels.outputs.has_release_label)
     permissions: "write-all"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Version Release
-        uses: ./.github/actions/version-release
+        uses: rollkit/.github/.github/actions/version-release@v0.2.2
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           version-bump: ${{inputs.version}}

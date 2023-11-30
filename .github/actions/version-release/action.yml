@@ -4,18 +4,14 @@ inputs:
   github-token:
     required: true
     description: "your GITHUB_TOKEN"
+  release-branch:
+    required: false
+    description: "The branch the tag should be generated from (default: main)"
+    default: "main"
   version-bump:
     required: false
     description: "major, minor, or patch version bump"
     default: "patch"
-  append-tag:
-    required: false
-    description: "Use for prereleases i.e. rc.1"
-    default: ""
-  is-prerelease:
-    required: false
-    description: "'true' or 'false'"
-    default: ""
 outputs:
   new-version:
     description: "new version created"
@@ -30,14 +26,11 @@ runs:
       with:
         github_token: ${{ inputs.github-token }}
         default_bump: ${{ inputs.version-bump }}
-        default_prerelease_bump: ${{ inputs.version-bump }}
-        append_to_pre_release_tag: "-${{ inputs.append-tag }}"
+        release_branches: ${{ inputs.release-branch }}
     - name: Create a GitHub release
-      if: ${{ inputs.append-tag != '' }}
       uses: ncipollo/release-action@v1
       with:
         tag: ${{ steps.tag_version.outputs.new_tag }}
         name: Release ${{ steps.tag_version.outputs.new_tag }}
         body: ${{ steps.tag_version.outputs.changelog }}
         generateReleaseNotes: true
-        prerelease: ${{ inputs.is-prerelease }}
