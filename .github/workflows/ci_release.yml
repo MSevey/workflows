@@ -3,12 +3,7 @@ on:
   push:
     branches:
       - main
-    # Trigger on version tags
-    tags:
-      - 'v[0-9]+\.[0-9]+\.[0-9]+'
-      - 'v[0-9]+\.[0-9]+\.[0-9]+-rc(?:[0-9]+|\.[0-9]+)'
   pull_request:
-  merge_group:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
@@ -24,33 +19,6 @@ on:
           - major
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    env:
-      # use consistent go version throughout pipeline here
-      GO_VERSION: "1.20"
-    outputs:
-      go-version: ${{ steps.set-vars.outputs.go-version }}
-    steps:
-      - name: Set go version
-        id: set-vars
-        run: echo "go-version=${{env.GO_VERSION}}" >> "$GITHUB_OUTPUT"
-
-  lint:
-    needs: [setup]
-    uses: ./.github/workflows/lint.yml
-    with:
-      go-version: ${{ needs.setup.outputs.go-version }}
-
-  test:
-    needs: [setup]
-    uses: ./.github/workflows/test.yml
-    with:
-      go-version: ${{ needs.setup.outputs.go-version }}
-
-  proto:
-    uses: ./.github/workflows/proto.yml
-
   # get_merged_pr_labels uses the listPullRequestsAssociatedWithCommit API
   # endpoint to get the PR information for the commit during a push event. Once
   # the PR information is received, we check to see if the create-release label
@@ -85,21 +53,46 @@ jobs:
         id: set-outputs
         run: echo "has_release_label=${{ fromJSON(steps.get_pr_data.outputs.result).hasReleaseLabel }}" >> "$GITHUB_OUTPUT"
 
-  # Make a release if this is a manually trigger job, i.e. workflow_dispatch, or
-  # there was a merged pr with the create-release label
-  release:
-    needs: [lint, test, proto, get_merged_pr_labels]
+  # branch_name trims ref/heads/ from github.ref to access a clean branch name
+  branch_name:
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.trim_ref.outputs.branch }}
+    steps:
+      - name: Trim branch name
+        id: trim_ref
+        run: |
+          echo "branch=$(${${{ github.ref }}:11})" >> $GITHUB_OUTPUT
+
+  # Make a release if there was a merged pr with the create-release label
+  release_on_merge:
+    needs: [branch_name, get_merged_pr_labels]
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' &&
-      contains(github.ref, 'refs/heads/main') &&
-      needs.get_merged_pr_labels.outputs.has_release_label)
+      (contains(github.ref, 'refs/heads/main') || contains(github.ref, 'refs/heads/v*')) &&
+      needs.get_merged_pr_labels.outputs.has_release_label == 'true')
     permissions: "write-all"
     steps:
       - uses: actions/checkout@v4
       - name: Version Release
-        uses: rollkit/.github/.github/actions/version-release@v0.2.2
+        uses: rollkit/.github/.github/actions/version-release@v0.3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          version-bump: ${{inputs.version}}
+          version-bump: "patch"
+          release-branch: ${{needs.branch_name.outputs.branch}}
+
+  # Make a release if there was a merged pr with the create-release label
+  release_on_dispatch:
+    needs: [branch_name, get_merged_pr_labels]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'dispatch'
+    permissions: "write-all"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Version Release
+        uses: rollkit/.github/.github/actions/version-release@v0.3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          version-bump: ${{ inputs.version }}
+          release-branch: ${{needs.branch_name.outputs.branch}}
