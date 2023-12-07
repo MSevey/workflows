@@ -86,7 +86,7 @@ jobs:
   release_on_dispatch:
     needs: branch_name
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     permissions: "write-all"
     steps:
       - uses: actions/checkout@v4
