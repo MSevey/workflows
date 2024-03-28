@@ -27,7 +27,7 @@ jobs:
           owner: celestiaorg
           repo: devops
           assignees: MSevey
-          title: Repo v1.2.3 Release Deployment
+          title: ${{inputs.release-repo}} ${{inputs.release-version}} Release Deployment
           body: |
             ## Release Checklist
             ```[tasklist]
