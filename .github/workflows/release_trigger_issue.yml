@@ -2,8 +2,7 @@ name: Release Trigger Issue
 
 on:
   release:
-    types:
-      - published
+    types: [published]
 
 jobs:
   trigger_issue:
