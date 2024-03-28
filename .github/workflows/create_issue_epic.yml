@@ -13,7 +13,7 @@ jobs:
 
       - uses: dacbd/create-issue-action@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CREATE_ISSUE_IN_DIFF_REPO }}
           owner: MSevey
           repo: workflows-2
           assignees: MSevey
