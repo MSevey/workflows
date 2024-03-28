@@ -19,12 +19,14 @@ jobs:
           assignees: MSevey
           title: Repo v1.2.3 Release Deployment
           body: |
-            ```[tasklist]
             ## Release Checklist
+            ```[tasklist]
             ### Pre-work
             - [ ] Confirm release tested on Robusta
             - [ ] App and Node compatibility confirmed
             - [ ] Release notes reviewed
+            ```
+            ```[tasklist]
             ### Stage 1: Arabica
             - [ ] Prepare deployment to Arabica
             - [ ] Prepare announcement for Arabica
@@ -32,6 +34,8 @@ jobs:
             - [ ] Deploy to Arabica
             - [ ] Verify release on Arabica
             - [ ] Docs updated for release for Arabica
+            ```
+            ```[tasklist]
             ### Stage 2: Mocha
             - [ ] Prepare deployment to Mocha
             - [ ] Prepare announcement for Mocha
@@ -39,6 +43,8 @@ jobs:
             - [ ] Deploy to Mocha
             - [ ] Verify release on Mocha
             - [ ] Docs updated for release for Mocha
+            ```
+            ```[tasklist]
             ### Stage 3: Mainnet
             - [ ] Prepare deployment for mainnet
             - [ ] Prepare announcement for mainnet
