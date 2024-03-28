@@ -14,8 +14,8 @@ jobs:
       - uses: dacbd/create-issue-action@v2
         with:
           token: ${{ secrets.CREATE_ISSUE_IN_DIFF_REPO }}
-          owner: MSevey
-          repo: workflows-2
+          owner: celestiaorg
+          repo: devops
           assignees: MSevey
           title: Repo v1.2.3 Release Deployment
           body: |
