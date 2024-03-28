@@ -1,0 +1,20 @@
+name: Release Trigger Issue
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  trigger_issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Trigger Create Issue Epic Workflow
+        uses: ./.github/workflows/create_issue_epic.yml
+        with:
+          release-repo: ${{ github.repository }}
+          release-version: ${{ github.event.release.tag_name }}
