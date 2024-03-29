@@ -64,6 +64,7 @@ jobs:
             - [ ] Verify release on mainnet
             - [ ] Docs updated for release for mainnet
             ```
+            cc @celestiaorg/devops
 
       - uses: ravsamhq/notify-slack-action@v2
         with:
@@ -73,6 +74,5 @@ jobs:
           message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
           footer: "Linked Issue <${{steps.create-issue.outputs.html_url}}>"
           mention_groups: "S04MZ965WQZ"
-          # mention_users: "U041K4YPENN"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
