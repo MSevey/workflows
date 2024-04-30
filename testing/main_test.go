@@ -7,6 +7,6 @@ import (
 // Test Hello
 func TestHello(t *testing.T) {
 	if hello() != "Hello" {
-		t.Fatal("Expected response 'Hello' got", hello())
+		t.Error("Expected response 'Hello' got", hello())
 	}
 }
