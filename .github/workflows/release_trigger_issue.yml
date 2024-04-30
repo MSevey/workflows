@@ -8,7 +8,7 @@ jobs:
   baseline:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Trigger type; ${{ github.event.release.action }}"
+      - run: echo "Trigger type; ${{ github.event.action }}"
   # trigger_issue:
   #   uses: ./.github/workflows/create_issue_epic.yml
   #   secrets: inherit
