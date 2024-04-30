@@ -8,14 +8,14 @@ jobs:
   baseline:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "github.event_name"
+      - run: echo "${{github.event_name}}"
   published:
-    if: ${{ github.event_name == "published" }}
+    if: ${{ github.event_name == 'published' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "published"
   released:
-    if: ${{ github.event_name == "released" }}
+    if: ${{ github.event_name == 'released' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "released"
