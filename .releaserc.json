@@ -5,7 +5,7 @@
     {
       "preset": "conventionalcommits",
       "releaseRules": [
-        { "type": "chore", "release": "patch" },
+        { "type": "fix", "release": "minor" },
         { "type": "docs", "release": "patch" },
         { "type": "test", "release": "patch" }
       ]
