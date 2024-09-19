@@ -1,78 +1,78 @@
-name: Create Issue Epic
+# name: Create Issue Epic
 
-on:
-  workflow_dispatch:
-  workflow_call:
-    inputs:
-      release-repo:
-        required: true
-        type: string
-        description: "Which repo is triggering this release?"
-      release-version:
-        required: true
-        type: string
-        description: "What is the version triggering this release?"
+# on:
+#   workflow_dispatch:
+#   workflow_call:
+#     inputs:
+#       release-repo:
+#         required: true
+#         type: string
+#         description: "Which repo is triggering this release?"
+#       release-version:
+#         required: true
+#         type: string
+#         description: "What is the version triggering this release?"
 
-jobs:
-  create_issue:
-    runs-on: ubuntu-latest
+# jobs:
+#   create_issue:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - uses: dacbd/create-issue-action@v2
-        id: create-issue
-        with:
-          token: ${{ secrets.CREATE_ISSUE_IN_DIFF_REPO }}
-          owner: celestiaorg
-          repo: devops
-          assignees: MSevey
-          title: ${{inputs.release-repo}} ${{inputs.release-version}} Release Deployment
-          body: |
-            ## Release Checklist
-            ```[tasklist]
-            ### Pre-work
-            - [ ] Confirm release tested on Robusta
-            - [ ] App and Node compatibility confirmed
-            - [ ] Release notes reviewed
-            ```
-            ```[tasklist]
-            ### Stage 1: Arabica
-            - [ ] Prepare deployment to Arabica
-            - [ ] Prepare announcement for Arabica
-            - [ ] Announce release for Arabica
-            - [ ] Deploy to Arabica
-            - [ ] Verify release on Arabica
-            - [ ] Docs updated for release for Arabica
-            ```
-            ```[tasklist]
-            ### Stage 2: Mocha
-            - [ ] Prepare deployment to Mocha
-            - [ ] Prepare announcement for Mocha
-            - [ ] Announce release for Mocha
-            - [ ] Deploy to Mocha
-            - [ ] Verify release on Mocha
-            - [ ] Docs updated for release for Mocha
-            ```
-            ```[tasklist]
-            ### Stage 3: Mainnet
-            - [ ] Prepare deployment for mainnet
-            - [ ] Prepare announcement for mainnet
-            - [ ] Announce release for mainnet
-            - [ ] Deploy to mainnet
-            - [ ] Verify release on mainnet
-            - [ ] Docs updated for release for mainnet
-            ```
-            cc @celestiaorg/devops
+#       - uses: dacbd/create-issue-action@v2
+#         id: create-issue
+#         with:
+#           token: ${{ secrets.CREATE_ISSUE_IN_DIFF_REPO }}
+#           owner: celestiaorg
+#           repo: devops
+#           assignees: MSevey
+#           title: ${{inputs.release-repo}} ${{inputs.release-version}} Release Deployment
+#           body: |
+#             ## Release Checklist
+#             ```[tasklist]
+#             ### Pre-work
+#             - [ ] Confirm release tested on Robusta
+#             - [ ] App and Node compatibility confirmed
+#             - [ ] Release notes reviewed
+#             ```
+#             ```[tasklist]
+#             ### Stage 1: Arabica
+#             - [ ] Prepare deployment to Arabica
+#             - [ ] Prepare announcement for Arabica
+#             - [ ] Announce release for Arabica
+#             - [ ] Deploy to Arabica
+#             - [ ] Verify release on Arabica
+#             - [ ] Docs updated for release for Arabica
+#             ```
+#             ```[tasklist]
+#             ### Stage 2: Mocha
+#             - [ ] Prepare deployment to Mocha
+#             - [ ] Prepare announcement for Mocha
+#             - [ ] Announce release for Mocha
+#             - [ ] Deploy to Mocha
+#             - [ ] Verify release on Mocha
+#             - [ ] Docs updated for release for Mocha
+#             ```
+#             ```[tasklist]
+#             ### Stage 3: Mainnet
+#             - [ ] Prepare deployment for mainnet
+#             - [ ] Prepare announcement for mainnet
+#             - [ ] Announce release for mainnet
+#             - [ ] Deploy to mainnet
+#             - [ ] Verify release on mainnet
+#             - [ ] Docs updated for release for mainnet
+#             ```
+#             cc @celestiaorg/devops
 
-      - uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: "New Release for Deployment"
-          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
-          footer: "Linked Issue <${{steps.create-issue.outputs.html_url}}>"
-          mention_groups: "S04MZ965WQZ"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#       - uses: ravsamhq/notify-slack-action@v2
+#         with:
+#           status: ${{ job.status }}
+#           token: ${{ secrets.GITHUB_TOKEN }}
+#           notification_title: "New Release for Deployment"
+#           message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+#           footer: "Linked Issue <${{steps.create-issue.outputs.html_url}}>"
+#           mention_groups: "S04MZ965WQZ"
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

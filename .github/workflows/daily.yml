@@ -1,10 +1,10 @@
-name: Daily
-on:
-  # schedule:
-  #   - cron: "0 1 * * *"
-  workflow_dispatch:
+# name: Daily
+# on:
+#   # schedule:
+#   #   - cron: "0 1 * * *"
+#   workflow_dispatch:
 
-jobs:
-  stale-PRs:
-    uses: ./.github/workflows/reusable_stale.yml
-    secrets: inherit
+# jobs:
+#   stale-PRs:
+#     uses: ./.github/workflows/reusable_stale.yml
+#     secrets: inherit
