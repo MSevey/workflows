@@ -14,7 +14,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Semantic Release
+      - name: Configure Semantic Release
+        # Work around for non npm project
+        # REF: https://github.com/cycjimmy/semantic-release-action/issues/115#issuecomment-1817264419
+        run: echo '{"branches":[],"plugins":["@semantic-release/commit-analyzer","@semantic-release/release-notes-generator","@semantic-release/github"]}' > .releaserc.json
+      - name: Create Release
         uses: cycjimmy/semantic-release-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
