@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+# unsure about permissions needed
+
 jobs:
   release:
     name: conventional-commit-pr-title
