@@ -15,7 +15,8 @@ jobs:
       - name: Configure Semantic Release
         # Work around for non npm project
         # REF: https://github.com/cycjimmy/semantic-release-action/issues/115#issuecomment-1817264419
-        run: echo '{"branches":[],"plugins":["@semantic-release/commit-analyzer","@semantic-release/release-notes-generator","@semantic-release/github"]}' > .releaserc.json
+        run: echo '{"branches":[],"plugins":["@semantic-release/release-notes-generator","@semantic-release/github"]}' > .releaserc.json
+        # run: echo '{"branches":[],"plugins":["@semantic-release/commit-analyzer","@semantic-release/release-notes-generator","@semantic-release/github"]}' > .releaserc.json
       - name: Create Release
         uses: cycjimmy/semantic-release-action@v4
         env:
