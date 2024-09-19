@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+# unsure about permissions needed
+
 jobs:
   release:
     name: conventional-commit-pr-title
@@ -17,4 +19,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          dry_run: true
+          branches: |
+            ["main"]
