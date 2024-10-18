@@ -1,8 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/MSevey/workflows-2/hello"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
-	fmt.Println("Hello, World!")
+	hello.Hello()
 }
