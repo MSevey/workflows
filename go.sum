@@ -1,4 +1,2 @@
-github.com/MSevey/workflows-2 v0.0.0-20241018143036-2754db6bdaf5 h1:xuN1kPnmAD/swc75fxJRS9zmMOkOVMrN0soAet8Py7g=
-github.com/MSevey/workflows-2 v0.0.0-20241018143036-2754db6bdaf5/go.mod h1:Qh1JBAV8LsNE+cy3KPY4te2cHIqDFtbbYN2k6QrVlPE=
-github.com/MSevey/workflows-2 v0.0.0-20241018143835-b587d01c9d41 h1:EPKEa41+qfeVJ3LGeDaSFwxA7HP4ibFaHjzMi6yFVxM=
-github.com/MSevey/workflows-2 v0.0.0-20241018143835-b587d01c9d41/go.mod h1:Qh1JBAV8LsNE+cy3KPY4te2cHIqDFtbbYN2k6QrVlPE=
+github.com/MSevey/workflows-2 v0.0.1 h1:T9kVPzc/+lrSSkqJafGQ3+oSEssk87TklHy0/PCSseY=
+github.com/MSevey/workflows-2 v0.0.1/go.mod h1:Qh1JBAV8LsNE+cy3KPY4te2cHIqDFtbbYN2k6QrVlPE=
