@@ -18,6 +18,5 @@ jobs:
         with:
           GH_PAT: ${{ secrets.SYNC }}
           PR_LABELS: "action sync"
-          COMMIT_PREFIX: "chore:"
-          PR_BODY: "Auto PR: syncing from .github repo"
+          COMMIT_PREFIX: "chore: "
           COMMIT_EACH_FILE: false
