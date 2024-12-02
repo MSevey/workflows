@@ -1,0 +1,5 @@
+group:
+  repos: |
+    MSevey/workflows-2
+  files:
+    - .github/dependabot.yml
