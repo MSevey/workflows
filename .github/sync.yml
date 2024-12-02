@@ -1,5 +1,9 @@
 group:
   repos: |
+    MSevey/workflows
     MSevey/workflows-2
   files:
-    - .github/dependabot.yml
+    - source: .github/dependabot.njk
+      dest: .github/dependabot.yml
+      template:
+        deps: [{ ecosystem: "docker" }, { ecosystem: "github-actions" }]

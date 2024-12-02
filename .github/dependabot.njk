@@ -1,0 +1,8 @@
+version: 2
+updates:
+{% for dep in deps %}
+  - package-ecosystem: {{dep.ecosystem}}
+    directory: "/"
+    schedule:
+      interval: weekly
+{% endfor %}
